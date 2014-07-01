@@ -27,6 +27,10 @@ module RailsAdmin
 
       def all(options = {}, scope = nil)
         scope ||= scoped
+
+        #Conference app specific patch
+        scope = scope.current_organizer if options[:for_current_organizer]
+
         scope = scope.includes(options[:include]) if options[:include]
         scope = scope.limit(options[:limit]) if options[:limit]
         scope = scope.where(primary_key => options[:bulk_ids]) if options[:bulk_ids]

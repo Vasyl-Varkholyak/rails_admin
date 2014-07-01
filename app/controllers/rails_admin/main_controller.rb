@@ -130,6 +130,8 @@ module RailsAdmin
       options = options.merge(query: params[:query]) if params[:query].present?
       options = options.merge(filters: params[:f]) if params[:f].present?
       options = options.merge(bulk_ids: params[:bulk_ids]) if params[:bulk_ids]
+      #Conference app specific patch
+      options = options.merge(:for_current_organizer => true) if _current_user.is_manager?
       model_config.abstract_model.all(options, scope)
     end
 

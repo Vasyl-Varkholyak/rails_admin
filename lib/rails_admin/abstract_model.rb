@@ -48,6 +48,8 @@ module RailsAdmin
         initialize_active_record
       elsif ancestors.include?('Mongoid::Document')
         initialize_mongoid
+      elsif ancestors.include?('HydraAPI::HydraModel')
+        initialize_hydra
       end
     end
 
@@ -96,6 +98,16 @@ module RailsAdmin
     end
 
   private
+
+    def initialize_hydra
+      @adapter = :hydra
+      model.class_eval do
+        require 'rails_admin/adapters/hydra/extension'
+        include RailsAdmin::Adapters::Hydra::Extension
+      end
+      require 'rails_admin/adapters/hydra'
+      extend Adapters::Hydra
+    end
 
     def initialize_active_record
       @adapter = :active_record
