@@ -1,4 +1,5 @@
 require 'rails_admin/adapters/hydra/abstract_object'
+require 'rails_admin/adapters/hydra/property'
 
 module RailsAdmin
   module Adapters
@@ -54,13 +55,7 @@ module RailsAdmin
 
       def properties
         model.columns.reject { |c| c.type.blank? }.map do |property|
-          {
-              :name => property.name.to_sym,
-              :pretty_name => property.name.to_s.tr('_', ' ').capitalize,
-              :length => property.limit,
-              :nullable? => property.null,
-              :serial? => property.primary,
-          }.merge(type_lookup(property))
+          Property.new(property, model)
         end
       end
 
