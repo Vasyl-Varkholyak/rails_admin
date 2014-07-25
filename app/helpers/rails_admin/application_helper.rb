@@ -52,14 +52,33 @@ module RailsAdmin
       nodes_stack = RailsAdmin::Config.visible_models(controller: controller)
       node_model_names = nodes_stack.collect { |c| c.abstract_model.model_name }
 
-      nodes_stack.group_by(&:navigation_label).collect do |navigation_label, nodes|
+      items = nodes_stack.group_by(&:navigation_label).collect do |navigation_label, nodes|
 
         nodes = nodes.select { |n| n.parent.nil? || !n.parent.to_s.in?(node_model_names) }
         li_stack = navigation nodes_stack, nodes
 
         label = navigation_label || t('admin.misc.navigation')
         %(<li class='nav-header'>#{label}</li>#{li_stack}) if li_stack.present?
-      end.join.html_safe
+      end
+
+      #Varkholyak Vasyl
+      conferences = node_model_names.include?('Conference') ? Conference.all : ''
+      items.first.insert(items.first.index('</li>'), custom_drop_down(conferences))
+      items.join.html_safe
+    end
+
+    def custom_drop_down(params = [])
+      "<li>
+          <select name='conferences'>
+            <option value='' selected='selected'>Please select Conference</option>
+            #{ unless params.empty?
+                params.collect do |param|
+                "<option value='#{param.id}'>#{param.name}</option>"
+                end.join
+              end
+            }
+          </select>
+      </li>"
     end
 
     def static_navigation

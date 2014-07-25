@@ -28,8 +28,11 @@ module RailsAdmin
       def all(options = {}, scope = nil)
         scope ||= scoped
 
-        #Conference app specific patch
+        # Conference app specific patch
+        # Yuriy Padlyak, Vasyl Varkholyak 
+        # All active_record models must has two scopes 'current_organizer' and 'current_conference'
         scope = scope.current_organizer if options[:for_current_organizer]
+        scope = scope.current_conference(options[:for_current_conference]) if options[:for_current_conference]
 
         scope = scope.includes(options[:include]) if options[:include]
         scope = scope.limit(options[:limit]) if options[:limit]

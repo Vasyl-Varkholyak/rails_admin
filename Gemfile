@@ -62,6 +62,7 @@ group :test do
   gem 'mini_magick', '>= 3.4'
   gem 'paperclip', '3.5.2'
   gem 'poltergeist', '~> 1.5'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rspec-rails', '>= 2.14'
   gem 'rubocop', '>= 0.19.0'
