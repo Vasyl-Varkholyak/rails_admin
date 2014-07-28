@@ -31,6 +31,10 @@ module RailsAdmin
                 @object.send("#{name}=", value)
               end
               changes = @object.changes
+
+              #Varkholyak Vasyl
+              @object.conference_id = request.cookies['conferenceId'] if request.cookies['conferenceId'].present?
+
               if @object.save
                 @auditing_adapter && @auditing_adapter.update_object(@object, @abstract_model, _current_user, changes)
                 respond_to do |format|
