@@ -33,8 +33,8 @@ module RailsAdmin
         # This is called when needing to scope a database query. It is called within the list
         # and bulk_delete/destroy actions and should return a scope which limits the records
         # to those which the user can perform the given action on.
-        def query(action, abstract_model)
-          abstract_model.model.accessible_by(@controller.current_ability, action)
+        def query(action, abstract_model, conference = {})
+          abstract_model.model.accessible_by(@controller.current_ability, conference)
         end
 
         # This is called in the new/create actions to determine the initial attributes for new
