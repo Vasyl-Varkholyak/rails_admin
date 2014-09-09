@@ -63,7 +63,7 @@ module RailsAdmin
 
       #Varkholyak Vasyl
       conferences = node_model_names.include?('Conference') ? Conference.all : ''
-      items.first.insert(items.first.index('</li>'), custom_drop_down(conferences))
+      items.first.insert(items.first.index('</li>'), custom_drop_down(conferences)) if current_user.respond_to?('is_admin?') && !current_user.is_admin?
       items.join.html_safe
     end
 
